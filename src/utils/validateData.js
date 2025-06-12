@@ -14,6 +14,7 @@ const validateDataToBeUpdated = (req) => {
     const allowedUpdates = ["firstName", "lastName", "age", "photoUrl", "skills"]
 
     const isAllowedUpdates = Object.keys(req.body).every((key) => allowedUpdates.includes(key))
+
     return isAllowedUpdates
 }
 

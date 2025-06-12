@@ -121,13 +121,19 @@ const getLogedInUser = async (_id) => {
     return user
 }
 
-const profileEdit = async (dataToBeEdited) => {
-    
+const profileUpdate = async (dataToBeEdited, user) => {
+
+    const updatedUser = Object.keys(dataToBeEdited).map((key) => user[key] = dataToBeEdited[key])
+
+    const userUpdated = await userModel.findOneAndUpdate({ _id: user._id },user)
+
+    return user
 }
 
 
 export const userDomain = {
     registerUser,
     authenticateUser,
-    getLogedInUser
+    getLogedInUser,
+    profileUpdate
 }
