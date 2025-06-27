@@ -114,7 +114,7 @@ const authenticateUser = async ({ emailId, password }) => {
 }
 
 const getLogedInUser = async (_id) => {
-    const user = await userModel.findOne({ _id }).populate("firstName", "lastName ")
+    const user = await userModel.find({ _id })
     if (!user) {
         throwError("did not find the user!")
     }
@@ -125,7 +125,7 @@ const profileUpdate = async (dataToBeEdited, user) => {
 
     const updatedUser = Object.keys(dataToBeEdited).map((key) => user[key] = dataToBeEdited[key])
 
-    const userUpdated = await userModel.findOneAndUpdate({ _id: user._id },user)
+    const userUpdated = await userModel.findOneAndUpdate({ _id: user._id }, user)
 
     return user
 }
