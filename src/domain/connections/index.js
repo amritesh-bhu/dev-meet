@@ -45,14 +45,15 @@ const createConnection = async ({ status, fromUserId, userId }) => {
 }
 
 const updateRequestStatus = async ({ fromUserId, userId, status }) => {
-    const userWithUpdatedStatus = await connModel.findOneAndUpdate({
-        $or: [
-            { fromUserId, toUserId: new mongoose.Types.ObjectId(userId) },
-            { fromUserId: new mongoose.Types.ObjectId(userId), toUserId: fromUserId }
-        ]
-    }, {
-        $set: { status: status }
-    })
+    const userWithUpdatedStatus = await connModel.findOneAndUpdate(
+        { fromUserId, toUserId: new mongoose.Types.ObjectId(userId), status: "interested" },
+        {
+            $set: { status: status }
+        })
+
+    if (!userWithUpdatedStatus) {
+        throw new Error("Invalid user with this status!!")
+    }
 
     return userWithUpdatedStatus
 
