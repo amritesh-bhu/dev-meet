@@ -1,9 +1,9 @@
 import cookieParser from "cookie-parser";
 import express from "express";
 import { dbConn } from "./config/dbCon.js";
-import { userSignUp } from "./routes/auth.js";
-import { userprofile } from "./routes/profile.js";
-import { userConnectionRequest } from "./routes/userConnectionRequest.js";
+import { authRouter } from "./routes/user-auth.js";
+import { profileRouter } from "./routes/user-profile.js";
+import { friendRequestRouter } from "./routes/friend-request-route.js";
 
 dbConn('mongodb://127.0.0.1:27017/dev-meet')
 
@@ -14,14 +14,12 @@ app.use(express.json())
 app.use(cookieParser())
 
 
-// app.use("/user", authRouter())  
-userSignUp('/user', app)
-userprofile('/profile', app)
-userConnectionRequest('/connection', app)
-
+app.use('/user', authRouter)
+app.use('/profile', profileRouter)
+app.use('/connection', friendRequestRouter)
 
 app.use((err, req, res, next) => {
-    res.status(400).send('something went wrong !' + err.message)
+    res.status(404).send({ message: err.message })
 })
 
 

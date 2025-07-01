@@ -44,11 +44,22 @@ const createConnection = async ({ status, fromUserId, userId }) => {
     return newConn
 }
 
-// const reviewReceivedConn = async () => {
-// const 
-// }
+const updateRequestStatus = async ({ fromUserId, userId, status }) => {
+    const userWithUpdatedStatus = await connModel.findOneAndUpdate({
+        $or: [
+            { fromUserId, toUserId: new mongoose.Types.ObjectId(userId) },
+            { fromUserId: new mongoose.Types.ObjectId(userId), toUserId: fromUserId }
+        ]
+    }, {
+        $set: { status: status }
+    })
+
+    return userWithUpdatedStatus
+
+}
 
 
 export const connDomain = {
-    createConnection
+    createConnection,
+    updateRequestStatus
 }
