@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken'
 import { handleRoute } from "../lib/handleRoute.js"
 
 export const userSignUp = (basepath, app) => {
+    // const app = new Router()
+
     app.post(`${basepath}/signup`, handleRoute(async (req, res) => {
         try {
 

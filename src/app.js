@@ -3,6 +3,7 @@ import express from "express";
 import { dbConn } from "./config/dbCon.js";
 import { userSignUp } from "./routes/auth.js";
 import { userprofile } from "./routes/profile.js";
+import { userConnectionRequest } from "./routes/userConnectionRequest.js";
 
 dbConn('mongodb://127.0.0.1:27017/dev-meet')
 
@@ -13,8 +14,11 @@ app.use(express.json())
 app.use(cookieParser())
 
 
+// app.use("/user", authRouter())  
 userSignUp('/user', app)
 userprofile('/profile', app)
+userConnectionRequest('/connection', app)
+
 
 app.use((err, req, res, next) => {
     res.status(400).send('something went wrong !' + err.message)

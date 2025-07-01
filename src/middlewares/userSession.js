@@ -8,11 +8,13 @@ export const userSession = async (req, res, next) => {
             throw new Error("Hey please login first to get the access!")
         }
 
-        const userDecodedMsg = await jwt.verify(token, "login@user")
-
+        const userDecodedMsg = jwt.verify(token, "login@user")
+        if (!userDecodedMsg) {
+            throw new Error("failed to decode JWT")
+        }
         const { _id } = userDecodedMsg
-        const userDetails = await userDomain.getLogedInUser(_id)
 
+        const userDetails = await userDomain.getUser(_id)
         req.user = userDetails
 
         next()

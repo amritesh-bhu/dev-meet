@@ -113,8 +113,8 @@ const authenticateUser = async ({ emailId, password }) => {
     return isUserExist
 }
 
-const getLogedInUser = async (_id) => {
-    const user = await userModel.find({ _id })
+const getUser = async (_id) => {
+    const user = await userModel.findOne({ _id: new mongoose.Types.ObjectId(_id) })
     if (!user) {
         throwError("did not find the user!")
     }
@@ -131,9 +131,11 @@ const profileUpdate = async (dataToBeEdited, user) => {
 }
 
 
+
+
 export const userDomain = {
     registerUser,
     authenticateUser,
-    getLogedInUser,
+    getUser,
     profileUpdate
 }
