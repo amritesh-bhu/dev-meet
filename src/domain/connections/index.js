@@ -20,6 +20,20 @@ const connSchema = mongoose.Schema({
 
 const connModel = mongoose.model("connModel", connSchema)
 
+
+const getConnectedDevs = async (userId) => {
+    const connectedDevs = await connModel.find({
+        $or: [
+            { fromUserId: new mongoose.Types.ObjectId(userId) },
+            { toUserId: new mongoose.Types.ObjectId(userId) }
+        ],
+        status: "accept"
+    }).populate("fromUserId", "firstName lastName")
+        .populate("toUserId", "firstName lastName")
+
+    return connectedDevs
+}
+
 const createConnection = async ({ status, fromUserId, userId }) => {
 
     const isAlreadyFriend = await connModel.findOne({
@@ -52,15 +66,22 @@ const updateRequestStatus = async ({ fromUserId, userId, status }) => {
         })
 
     if (!userWithUpdatedStatus) {
-        throw new Error("Invalid user with this status!!")
+        throw new Error("User is your firend already or does not exist!")
     }
 
     return userWithUpdatedStatus
 
 }
 
+const getFriendRequests = async ({ toUserId }) => {
+    const receivedRequest = await connModel.find({ toUserId, status: "interested" }).populate("formUser", "firstName lastName")
+    return receivedRequest
+}
+
 
 export const connDomain = {
     createConnection,
-    updateRequestStatus
+    updateRequestStatus,
+    getFriendRequests,
+    getConnectedDevs
 }
