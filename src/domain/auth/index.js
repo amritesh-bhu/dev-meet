@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator";
-import { nanoid } from "nanoid"
-import crypto from "crypto"
+import { nanoid } from "nanoid";
+import crypto from "crypto";
 
 const userSchema = mongoose.Schema({
     firstName: {
@@ -125,9 +125,9 @@ const profileUpdate = async (dataToBeEdited, user) => {
 
     const updatedUser = Object.keys(dataToBeEdited).map((key) => user[key] = dataToBeEdited[key])
 
-    const userUpdated = await userModel.findOneAndUpdate({ _id: user._id }, user)
+    const userUpdated = await userModel.findOneAndUpdate({ _id: user._id }, updatedUser)
 
-    return user
+    return userUpdated
 }
 
 
